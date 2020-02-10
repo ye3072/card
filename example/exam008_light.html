@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Example 008</title>
+    <script type="text/javascript" src="../libs/three_lye.js"></script>
+    <script type="text/javascript" src="../libs/orbitControls.js"></script>
+    <script type="text/javascript" src="../libs/dat.gui.js"></script>
+    <script type="text/javascript" src="../libs/THREEx.WindowResize.js"></script>
+    <style>
+        body {
+                /* set margin to 0 and overflow to hidden, to go fullscreen */
+                margin: 0;
+                overflow: hidden;
+            }
+            canvas {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+</head>
+
+<body>
+    <!-- Javascript code that runs our Three.js examples -->
+    <script type="text/javascript">
+    var scene;
+    var camera;
+    var renderer;
+
+    var orbitControls
+
+    // once everything is loaded, we run our Three.js stuff.
+    function init() {
+        scene = new THREE.Scene();
+
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight);
+        camera.position.set(60, 20, 60);
+        camera.lookAt(scene.position);
+
+        renderer = new THREE.WebGLRenderer();
+        renderer.setClearColor(new THREE.Color(0xEEEEEE));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+
+        document.body.appendChild(renderer.domElement);
+
+        var axes = new THREE.AxesHelper(50);
+        scene.add(axes);
+
+        var planeGeometry = new THREE.PlaneGeometry(100, 100);
+        var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.receiveShadow = true;
+        plane.position.set(0, 0, 0);
+        plane.rotation.x = -0.5 * Math.PI;
+
+        scene.add(plane);
+
+        var sphereGeometry = new THREE.SphereGeometry(2);   
+        for (var i = 0; i < planeGeometry.parameters.height/5; i++) {
+            for (var j = 0; j < planeGeometry.parameters.width/5; j++) {
+                var sphereMaterial = new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff});
+                var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+                sphere.position.x = -(planeGeometry.parameters.height / 2) + 5 * i;
+                sphere.position.y = 5;
+                sphere.position.z = -(planeGeometry.parameters.height / 2) + 5 * j;
+                sphere.castShadow = true;
+
+                scene.add(sphere);
+
+            }
+        }
+
+        var directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        directionalLight.position.set(-20, 40, 60);
+        directionalLight.castShadow = true;
+
+        var cameraHelper = new THREE.CameraHelper( directionalLight.shadow.camera );
+        scene.add(cameraHelper);
+
+        scene.add(directionalLight);
+
+        orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
+
+        var sphereLightGeometry = new THREE.SphereGeometry(0.2);
+        var sphereLightMaterial = new THREE.MeshBasicMaterial({color: 0xac6c25});
+        var sphereLight = new THREE.Mesh(sphereLightGeometry, sphereLightMaterial);
+        sphereLight.castShadow = true;
+        sphereLight.position.set(3, 20, 3);
+
+        scene.add(sphereLight);
+
+        var step = 0;
+        function render() {
+
+            requestAnimationFrame(render);
+
+            step += 0.02;
+
+            sphereLight.position.y = 30;
+            sphereLight.position.z = 10 * Math.sin(step);
+            sphereLight.position.x = 10 * Math.cos(step);
+
+            directionalLight.position.copy(sphereLight.position);
+
+            renderer.render(scene, camera);
+
+        }
+
+        THREEx.WindowResize(renderer, camera);
+
+        render();
+
+    }
+
+    window.scene = scene;
+    window.onload = init;
+
+    </script>
+</body>
+
+</html>

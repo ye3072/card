@@ -1,0 +1,296 @@
+<html lang="en"><head><style class="darkreader darkreader--fallback" media="screen"></style><style class="darkreader darkreader--text" media="screen"></style><style class="darkreader darkreader--invert" media="screen"></style><style class="darkreader darkreader--inline" media="screen">[data-darkreader-inline-bgcolor] {
+  background-color: var(--darkreader-inline-bgcolor) !important;
+}
+[data-darkreader-inline-bgimage] {
+  background-image: var(--darkreader-inline-bgimage) !important;
+}
+[data-darkreader-inline-border] {
+  border-color: var(--darkreader-inline-border) !important;
+}
+[data-darkreader-inline-border-bottom] {
+  border-bottom-color: var(--darkreader-inline-border-bottom) !important;
+}
+[data-darkreader-inline-border-left] {
+  border-left-color: var(--darkreader-inline-border-left) !important;
+}
+[data-darkreader-inline-border-right] {
+  border-right-color: var(--darkreader-inline-border-right) !important;
+}
+[data-darkreader-inline-border-top] {
+  border-top-color: var(--darkreader-inline-border-top) !important;
+}
+[data-darkreader-inline-boxshadow] {
+  box-shadow: var(--darkreader-inline-boxshadow) !important;
+}
+[data-darkreader-inline-color] {
+  color: var(--darkreader-inline-color) !important;
+}
+[data-darkreader-inline-fill] {
+  fill: var(--darkreader-inline-fill) !important;
+}
+[data-darkreader-inline-stroke] {
+  stroke: var(--darkreader-inline-stroke) !important;
+}
+[data-darkreader-inline-outline] {
+  outline-color: var(--darkreader-inline-outline) !important;
+}</style><style class="darkreader darkreader--user-agent" media="screen">html {
+    background-color: #181a1b !important;
+}
+html, body, input, textarea, select, button {
+    background-color: #181a1b;
+}
+html, body, input, textarea, select, button {
+    border-color: #575757;
+    color: #e8e6e3;
+}
+a {
+    color: #3391ff;
+}
+table {
+    border-color: #4c4c4c;
+}
+::placeholder {
+    color: #bab5ab;
+}
+::selection {
+    background-color: #005ccc;
+    color: #ffffff;
+}
+::-moz-selection {
+    background-color: #005ccc;
+    color: #ffffff;
+}
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+    background-color: #545b00 !important;
+    color: #e8e6e3 !important;
+}
+::-webkit-scrollbar {
+    background-color: #1c1e1f;
+    color: #c5c1b9;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #2a2c2e;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #323537;
+}
+::-webkit-scrollbar-thumb:active {
+    background-color: #3d4043;
+}
+::-webkit-scrollbar-corner {
+    background-color: #181a1b;
+}
+* {
+    scrollbar-color: #2a2c2e #1c1e1f;
+}</style>
+	<title>Mouseover (Three.js)</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+	<link rel="stylesheet" href="css/base.css"><style class="darkreader darkreader--sync" media="screen"></style>
+<style class="darkreader darkreader--override" media="screen">.jfk-bubble {
+    background-color: #000000 !important;
+}
+.vimvixen-hint {
+    background-color: #7b5300 !important;
+    border-color: #d8b013 !important;
+    color: #f3e8c8 !important;
+}
+::placeholder {
+    opacity: 0.5 !important;
+}</style></head>
+<body>
+
+<script src="js/Three.js"></script>
+<script src="js/Detector.js"></script>
+<script src="js/Stats.js"></script>
+<script src="js/OrbitControls.js"></script>
+<script src="js/THREEx.KeyboardState.js"></script>
+<script src="js/THREEx.FullScreen.js"></script>
+<script src="js/THREEx.WindowResize.js"></script>
+
+<!-- jQuery code to display an information button and box when clicked. -->
+<script src="js/jquery-1.9.1.js"></script>
+<script src="js/jquery-ui.js"></script>
+<link rel="stylesheet" href="css/jquery-ui.css"><style class="darkreader darkreader--sync" media="screen"></style>
+<link rel="stylesheet" href="css/info.css"><style class="darkreader darkreader--sync" media="screen"></style>
+<script src="js/info.js"></script>
+<div id="infoButton" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false" style="z-index: 2; background: rgba(0, 0, 0, 0); opacity: 0.9; position: absolute; top: 4px; left: 4px; --darkreader-inline-bgimage: initial; --darkreader-inline-bgcolor:rgba(0, 0, 0, 0);" data-darkreader-inline-bgimage="" data-darkreader-inline-bgcolor=""><span class="ui-button-text"><img width="32" height="32" src="images/icon-info.png"></span></div>
+
+<!-- ------------------------------------------------------------ -->
+
+<div id="ThreeJS" style="position: absolute; left:0px; top:0px"><canvas width="1032" height="290"></canvas><div style="cursor: pointer; width: 80px; opacity: 0.9; z-index: 100; position: absolute; bottom: 0px;"><div style="text-align: left; line-height: 1.2em; background-color: rgb(8, 8, 24); padding: 0px 0px 3px 3px; --darkreader-inline-bgcolor:#080818;" data-darkreader-inline-bgcolor=""><div style="font-family: Helvetica, Arial, sans-serif; font-size: 9px; color: rgb(0, 255, 255); font-weight: bold; --darkreader-inline-color:#33ffff;" data-darkreader-inline-color="">60 FPS (42-60)</div><div style="position: relative; width: 74px; height: 30px; background-color: rgb(0, 255, 255); --darkreader-inline-bgcolor:#00cccc;" data-darkreader-inline-bgcolor=""><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12.9px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12.3px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 14.1px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12.3px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12.3px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 12px; float: left; background-color: rgb(16, 16, 48); --darkreader-inline-bgcolor:#101030;" data-darkreader-inline-bgcolor=""></span></div></div><div style="text-align: left; line-height: 1.2em; background-color: rgb(8, 24, 8); padding: 0px 0px 3px 3px; display: none; --darkreader-inline-bgcolor:#081808;" data-darkreader-inline-bgcolor=""><div style="font-family: Helvetica, Arial, sans-serif; font-size: 9px; color: rgb(0, 255, 0); font-weight: bold; --darkreader-inline-color:#33ff33;" data-darkreader-inline-color="">18 MS (5-214)</div><div style="position: relative; width: 74px; height: 30px; background-color: rgb(0, 255, 0); --darkreader-inline-bgcolor:#00cc00;" data-darkreader-inline-bgcolor=""><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.3px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.3px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.3px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.45px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.6px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span><span style="width: 1px; height: 27.3px; float: left; background-color: rgb(16, 48, 16); --darkreader-inline-bgcolor:#103010;" data-darkreader-inline-bgcolor=""></span></div></div></div></div>
+<script>
+/*
+	Three.js "tutorials by example"
+	Author: Lee Stemkoski
+	Date: July 2013 (three.js v59dev)
+*/
+
+// MAIN
+
+// standard global variables
+var container, scene, camera, renderer, controls, stats;
+var keyboard = new THREEx.KeyboardState();
+var clock = new THREE.Clock();
+
+// custom global variables
+var cube;
+var projector, mouse = { x: 0, y: 0 }, INTERSECTED;
+
+init();
+animate();
+
+// FUNCTIONS 		
+function init() 
+{
+	// SCENE
+	scene = new THREE.Scene();
+	// CAMERA
+	var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+	var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+	scene.add(camera);
+	camera.position.set(0,150,400);
+	camera.lookAt(scene.position);	
+	// RENDERER
+	if ( Detector.webgl )
+		renderer = new THREE.WebGLRenderer( {antialias:true} );
+	else
+		renderer = new THREE.CanvasRenderer(); 
+	renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	container = document.getElementById( 'ThreeJS' );
+	container.appendChild( renderer.domElement );
+	// EVENTS
+	THREEx.WindowResize(renderer, camera);
+	THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0) });
+	// CONTROLS
+	controls = new THREE.OrbitControls( camera, renderer.domElement );
+	// STATS
+	stats = new Stats();
+	stats.domElement.style.position = 'absolute';
+	stats.domElement.style.bottom = '0px';
+	stats.domElement.style.zIndex = 100;
+	container.appendChild( stats.domElement );
+	// LIGHT
+	var light = new THREE.PointLight(0xffffff);
+	light.position.set(0,250,0);
+	scene.add(light);
+	// FLOOR
+	var floorTexture = new THREE.ImageUtils.loadTexture( 'images/checkerboard.jpg' );
+	floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
+	floorTexture.repeat.set( 10, 10 );
+	var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+	var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+	var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+	floor.position.y = -0.5;
+	floor.rotation.x = Math.PI / 2;
+	scene.add(floor);
+	// SKYBOX/FOG
+	var skyBoxGeometry = new THREE.CubeGeometry( 10000, 10000, 10000 );
+	var skyBoxMaterial = new THREE.MeshBasicMaterial( { color: 0x9999ff, side: THREE.BackSide } );
+	var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );
+	scene.add(skyBox);
+	
+	////////////
+	// CUSTOM //
+	////////////
+	var cubeGeometry = new THREE.CubeGeometry( 50, 50, 50 );
+	var cubeMaterial = new THREE.MeshBasicMaterial( { color: 0x000088 } );
+	cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
+	cube.position.set(0,26,0);
+	scene.add(cube);
+	
+	// initialize object to perform world/screen calculations
+	projector = new THREE.Projector();
+	
+	// when the mouse moves, call the given function
+	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+	
+}
+
+function onDocumentMouseMove( event ) 
+{
+	// the following line would stop any other event handler from firing
+	// (such as the mouse's TrackballControls)
+	// event.preventDefault();
+	
+	// update the mouse variable
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+}
+
+function animate() 
+{
+    requestAnimationFrame( animate );
+	render();		
+	update();
+}
+
+function update()
+{
+	// find intersections
+
+	// create a Ray with origin at the mouse position
+	//   and direction into the scene (camera direction)
+	var vector = new THREE.Vector3( mouse.x, mouse.y, 1 );
+	projector.unprojectVector( vector, camera );
+	var ray = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+
+	// create an array containing all objects in the scene with which the ray intersects
+	var intersects = ray.intersectObjects( scene.children );
+
+	// INTERSECTED = the object in the scene currently closest to the camera 
+	//		and intersected by the Ray projected from the mouse position 	
+	
+	// if there is one (or more) intersections
+	if ( intersects.length > 0 )
+	{
+		// if the closest object intersected is not the currently stored intersection object
+		if ( intersects[ 0 ].object != INTERSECTED ) 
+		{
+		    // restore previous intersection object (if it exists) to its original color
+			if ( INTERSECTED ) 
+				INTERSECTED.material.color.setHex( INTERSECTED.currentHex );
+			// store reference to closest object as current intersection object
+			INTERSECTED = intersects[ 0 ].object;
+			// store color of closest object (for later restoration)
+			INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
+			// set a new color for closest object
+			INTERSECTED.material.color.setHex( 0xffff00 );
+		}
+	} 
+	else // there are no intersections
+	{
+		// restore previous intersection object (if it exists) to its original color
+		if ( INTERSECTED ) 
+			INTERSECTED.material.color.setHex( INTERSECTED.currentHex );
+		// remove previous intersection object reference
+		//     by setting current intersection object to "nothing"
+		INTERSECTED = null;
+	}
+
+
+	if ( keyboard.pressed("z") ) 
+	{ 
+		// do something
+	}
+	
+	controls.update();
+	stats.update();
+}
+
+function render() 
+{
+	renderer.render( scene, camera );
+}
+
+</script>
+
+
+
+<div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable" tabindex="-1" role="dialog" aria-describedby="infoBox" aria-labelledby="ui-id-1" style="display: none; position: absolute;"><div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix"><span id="ui-id-1" class="ui-dialog-title">Demo Information</span><button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" aria-disabled="false" title="close"><span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span><span class="ui-button-text">close</span></button></div><div id="infoBox" class="ui-dialog-content ui-widget-content" style="background: rgba(255, 255, 255, 0.5); --darkreader-inline-bgimage: initial; --darkreader-inline-bgcolor:rgba(24, 26, 27, 0.5);" data-darkreader-inline-bgimage="" data-darkreader-inline-bgcolor="">
+This three.js demo is part of a collection at
+<a href="http://stemkoski.github.io/Three.js/">http://stemkoski.github.io/Three.js/</a>
+</div><div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-e" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-s" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-sw" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-ne" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-nw" style="z-index: 90;"></div></div></body></html>
