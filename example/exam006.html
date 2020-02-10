@@ -262,7 +262,7 @@
                     document.getElementsByClassName('modal-content')[0].style.backgroundColor = '#' + obj.currentHexString;
                 }
 
-                window.removeEventListener('mousemove', onDocumentMouseMove);
+                window.removeEventListener('mousemove', onDocumentMouseMove, true);
 
             }
 
@@ -276,8 +276,7 @@
             // When the user clicks on <span> (x), close the modal
             span.onclick = function() {
                 modal.style.display = "none";
-                window.addEventListener('mousemove', onDocumentMouseMove, false);
-
+                window.addEventListener('mousemove', onDocumentMouseMove, true);
 
                 orbitControls.setMove(true);
             }
@@ -290,7 +289,7 @@
             // }
 
             window.addEventListener('mouseup', openModal, true);
-            window.addEventListener('mousemove', onDocumentMouseMove, false);
+            window.addEventListener('mousemove', onDocumentMouseMove, true);
             window.addEventListener('touchend', openModalTouch, true);
             window.scene = scene;
             window.onload = init;

@@ -764,6 +764,9 @@ THREE.OrbitControls = function ( object, domElement ) {
 
     function onMouseDown( event ) {
 
+        // yelee
+        move = false;
+
         if ( scope.enabled === false ) return;
 
         // Prevent the browser from scrolling.
