@@ -920,7 +920,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 
         handleMouseUp( event );
 
-        document.removeEventListener( 'mousemove', onMouseMove, false );
+        // yelee: addEventListener
+        document.addEventListener( 'mousemove', onDocumentMouseMove, true );
         document.removeEventListener( 'mouseup', onMouseUp, false );
 
         scope.dispatchEvent( endEvent );
