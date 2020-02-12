@@ -533,6 +533,8 @@ THREE.OrbitControls = function ( object, domElement ) {
 
     function handleMouseMovePan( event ) {
 
+        move = true;
+
         panEnd.set( event.clientX, event.clientY );
 
         panDelta.subVectors( panEnd, panStart ).multiplyScalar( scope.panSpeed );
@@ -883,10 +885,10 @@ THREE.OrbitControls = function ( object, domElement ) {
 
     function onMouseMove( event ) {
 
-        if ( scope.enabled === false ) return;
-
         // yelee : 앵글이동시 모달 팝 방지
         move = true;
+
+        if ( scope.enabled === false ) return;
 
         event.preventDefault();
 
