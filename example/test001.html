@@ -1,317 +1,340 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-    <meta charset="utf-8">
-    <title>TEST 001</title>
-    <script type="text/javascript" src="../libs/three_lye.js"></script>
-    <script type="text/javascript" src="../libs/Projector.js"></script>
-    <script type="text/javascript" src="../libs/SceneUtils.js"></script>
-    <script type="text/javascript" src="../libs/OrbitControls.js"></script>
-    <script type="text/javascript" src="../libs/THREEx.FullScreen.js"></script>
-    <script type="text/javascript" src="../libs/THREEx.WindowResize.js"></script>
-    <style>
-        body {
-                /* set margin to 0 and overflow to hidden, to go fullscreen */
-                margin: 0;
-                overflow: hidden;
-            }
-            canvas {
-                width: 100%;
-                height: 100%;
-            }
-            /* The Modal (background) */
-            .modal {
-              display: none; /* Hidden by default */
-              position: fixed; /* Stay in place */
-              z-index: 1; /* Sit on top */
-              padding-top: 10%; /* Location of the box */
-              padding-bottom: 10%;
-              left: 0;
-              top: 0;
-              width: 100%; /* Full width */
-              height: 100%; /* Full height */
-              overflow: auto; /* Enable scroll if needed */
-              background-color: rgb(0,0,0); /* Fallback color */
-              background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            }
-
-            /* Modal Content */
-            .modal-content {
-              background-color: #fefefe;
-              margin: auto;
-              padding: 10px;
-              opacity: 0.85;
-              /*border-radius: 15px;*/
-            }
-
-            /* The Close Button */
-            .close {
-              color: #aaaaaa;
-              float: right;
-              font-size: 28px;
-              font-weight: bold;
-            }
-
-            .close:hover,
-            .close:focus {
-              color: #000;
-              text-decoration: none;
-              cursor: pointer;
-            }
-        </style>
-</head>
-
-<body>
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
+    <head>
+        <meta charset="utf-8">
+        <title>Example 005</title>
+        <script type="text/javascript" src="../libs/three_lye.js"></script>
+        <script type="text/javascript" src="../libs/Projector.js"></script>
+        <script type="text/javascript" src="../libs/OrbitControls.js"></script>
+        <script type="text/javascript" src="../libs/THREEx.FullScreen.js"></script>
+        <script type="text/javascript" src="../libs/THREEx.WindowResize.js"></script>
+        <link rel="stylesheet" type="text/css" href="../assets/AgicsCard.css">
+    </head>
+    <body>
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+          <!-- Modal content -->
+          <div class="modal-content">
             <span class="close">&times;</span>
             <p>card name</p>
-            <strong>
-                <p class="card-name"></p>
-            </strong>
+            <strong><p class="card-name"></p></strong>
+          </div>
         </div>
-    </div>
-    <!-- Javascript code that runs our Three.js examples -->
-    <script type="text/javascript">
-    var scene;
-    var camera;
-    var renderer;
-    var orbitControls;
+        <!-- Javascript code that runs our Three.js examples -->
+        <script type="text/javascript">
+            var scene;
+            var camera;
+            var renderer;
+            var orbitControls;
 
-    var mouse = { x: -1000, y: -1000 };
-    var projector;
-    var INTERSECTED;
+            var mouse = {x: -1000, y: -1000};
+            var projector;
+            var INTERSECTED;
+            
+            var texture;
+            var imageElement = document.createElement('img');
+            imageElement.onload = function ( e ) {
+                texture = new THREE.Texture(this);
+                texture.needsUpdate = true;
+            };
+            imageElement.src = '../assets/images/pengsu.jpg';
 
-    var texture;
-    var imageElement = document.createElement('img');
-    imageElement.onload = function(e) {
-        texture = new THREE.Texture(this);
-        texture.needsUpdate = true;
-    }
-    imageElement.src = '../assets/images/pengsu.jpg';
+            var texture2;
+            var imageElement2 = document.createElement('img');
+            imageElement2.onload = function ( e ) {
+                texture2 = new THREE.Texture(this);
+                texture2.needsUpdate = true;
+            };
+            imageElement2.src = '../assets/images/snoopy01.png';
 
-    var texture2;
-    var imageElement2 = document.createElement('img');
-    imageElement2.onload = function(e) {
-        texture2 = new THREE.Texture(this);
-        texture2.needsUpdate = true;
-    }
-    imageElement2.src = '../assets/images/snoopy01.png';
+            function init() {
+                scene = new THREE.Scene();
 
-    function init() {
+                var axes = new THREE.AxesHelper(50);
+                scene.add(axes);
 
-        scene = new THREE.Scene();
+                camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight);
+                camera.position.set(-90, 50, 50);
+                camera.lookAt(scene.position);
 
-        var axes = new THREE.AxesHelper(50);
-        scene.add(axes);
+                renderer = new THREE.WebGLRenderer();
+                renderer.setClearColor(new THREE.Color(0xEEEEEE));
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.shadowMap.enabled = true;
 
-        camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight);
-        camera.position.set(-90, 50, 50);
-        camera.lookAt(scene.position);
+                //events
+                THREEx.WindowResize(renderer, camera);
+                THREEx.FullScreen.bindKey({charCode : 'm'.charCodeAt(0)});
 
-        renderer = new THREE.WebGLRenderer();
-        renderer.setClearColor(new THREE.Color(0xEEEEEE));
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
+                //orbitControls
+                orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
 
-        //events
-        THREEx.WindowResize(renderer, camera);
-        THREEx.FullScreen.bindKey({ charCode: 'm'.charCodeAt(0) });
+                var sphereGeometry = new THREE.SphereGeometry(5);
+                var sphereMaterial = new THREE.MeshBasicMaterial({color: 0x5CD1E5});
+                sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+                sphere.position.x = camera.position.x * 0.3;
+                sphere.position.y = camera.position.y * 0.3;
+                sphere.position.z = camera.position.z * 0.3;
 
-        //orbitControls
-        orbitControls = new THREE.OrbitControls(camera, renderer.domElement);
+                //scene.add(sphere);
 
-        var texLoader = new THREE.TextureLoader();
+                for(var i = 0; i < 10; i++) {
+                    for(var j = 0; j < 10; j++) {
 
-        var tex1 = texLoader.load("../assets/images/pengsu.jpg", render); // bricks
-        var tex2 = texLoader.load("../assets/images/snoopy01.png", render); // space
+                        var planeGeometry = new THREE.BoxGeometry(20, 10);
+                        var planeMaterial = new THREE.MeshBasicMaterial({opacity: 1, /*color: Math.random() * 0xffffff,*/ transparent: true, side: THREE.BackSide, map: texture});
+                        var planeMaterial2 = new THREE.MeshBasicMaterial({opacity: 1, /*color: Math.random() * 0xffffff,*/ transparent: true, side: THREE.BackSide, map: texture2});
 
+                        var plane = new THREE.Mesh(planeGeometry, [planeMaterial, planeMaterial2]);
 
-        for (var i = 0; i < 10; i++) {
-            for (var j = 0; j < 10; j++) {
-                // planeGeometry.parameters.height, planeGeometry.parameters.width
-                var planeGeometry = new THREE.PlaneGeometry(20, 10);
-                var planeMaterial = new THREE.MeshBasicMaterial({ opacity: 1, transparent: true, side: THREE.FrontSide, map: texture });
-                var planeMaterial2 = new THREE.MeshBasicMaterial({ opacity: 1, transparent: true, side: THREE.BackSide, map: texture2 });
+                        var planeNum = i * 10 + j;
+                        plane.name = "plane-" + planeNum;
+                        plane.rotation.x = 0.5 * Math.PI;
+                        plane.translateX(-120 + 30 * i);
+                        plane.translateY(-60 + 15 * j);
 
-                //debugger;
-                //var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+                        scene.add(plane);
 
-                var plane = THREE.SceneUtils.createMultiMaterialObject(planeGeometry, [planeMaterial, planeMaterial2]);
-
-                var planeNum = i * 10 + j;
-                plane.name = "plane-" + planeNum;
-                plane.rotation.x = 0.5 * Math.PI;
-                plane.translateX(-120 + 30 * i);
-                plane.translateY(-60 + 15 * j);
-
-                scene.add(plane);
-
-            }
-        }
-
-        var directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
-        directionalLight.position.set(-20, 40, 60);
-        directionalLight.castShadow = true;
-
-        var cameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
-        scene.add(cameraHelper);
-
-        scene.add(directionalLight);
-
-        // initialize object to perform world/screen calculations
-        projector = new THREE.Projector();
-
-        document.body.appendChild(renderer.domElement);
-
-        //renderer.render(scene, camera);
-        animate();
-
-    }
-
-    function onDocumentMouseMove(e) {
-        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    }
-
-    var obj;
-    var selected = [];
-
-    function animate() {
-        requestAnimationFrame(animate);
-        render();
-        update();
-
-        for (var i = 0; i < selected.length; i++) {
-            var sel = selected[i];
-            if (sel != obj) {
-                if (sel.position.y > 0) {
-                    sel.position.y -= 0.2;
-                    sel.rotation.x += Math.PI / (8 / 0.2);
-                } else {
-                    selected.splice(i, 1);
-                }
-            } else {
-                if (sel.position.y < 8) {
-                    sel.position.y += 0.2;
-                    sel.rotation.x -= Math.PI / (8 / 0.2);
-                }
-            }
-        }
-
-        if (INTERSECTED) {
-            if (selected.length == 0) {
-                selected.push(INTERSECTED);
-                obj = INTERSECTED;
-            } else {
-                for (var i = 0; i < selected.length; i++) {
-                    if (selected[i] == INTERSECTED) {
-                        return;
                     }
                 }
-                selected.push(INTERSECTED);
-                obj = INTERSECTED;
+
+                // initialize object to perform world/screen calculations
+                projector = new THREE.Projector();
+
+                document.body.appendChild(renderer.domElement);
+
+                //renderer.render(scene, camera);
+                animate();
+
             }
-        }
-    }
 
-    function render() {
-        renderer.render(scene, camera);
-    }
+            function onDocumentMouseMove( e ) {
+                mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = - (e.clientY / window.innerHeight) * 2 + 1;
 
-    function update() {
-        // find intersections
-
-        // create a Ray with origin at the mouse position
-        // and direction into the scene (camera direction)
-
-        var vector = new THREE.Vector3(mouse.x, mouse.y, 1);
-        vector.unproject(camera);
-        var ray = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-
-        // create an array containing all objects in the scene with which the ray intersects
-        var intersects = ray.intersectObjects(scene.children);
-
-        // INTERSECTED = the object in the scene currently closest to the camera
-        // and intersected by the Ray projected from the mouse position
-
-        // if there is one (or more) intersections
-        if (intersects.length > 0) {
-            // if the closest object intersected is not the currently stored intersection object
-            if (intersects[0].object != INTERSECTED) {
-                //if (INTERSECTED)
-                //    INTERSECTED.material.color.setHex(INTERSECTED.currentHex);
-                // store reference to closest object as current intersection object
-                INTERSECTED = intersects[0].object;
-
-                // store color of closest object (for later restoration)
-                // INTERSECTED.currentHexString = INTERSECTED.material.color.getHexString();
-                // INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
-                // set a new color for closest object
-                //INTERSECTED.material.color.setHex(0xffff00);
+                console.log('camera position: ', camera.position.x, 
+                                                 camera.position.y,
+                                                 camera.position.z);
             }
-        } else { // there are no intersections
-            // restore previous intersection object (if it exists) to its original color
-            // if (INTERSECTED)
-            //     INTERSECTED.material.color.setHex(INTERSECTED.currentHex);
-            INTERSECTED = null;
-        }
 
-        orbitControls.update();
-    }
+            var obj;
+            var selected = [];
+            function animate() {
+                requestAnimationFrame(animate);
+                render();
+                update();
 
-    // Get the modal
-    var modal = document.getElementById("myModal");
+                for(var i = 0; i < selected.length; i++) {
+                    var sel = selected[i];
+                    if(sel != obj) { 
+                        if(sel.position.y > 0) {
+                            sel.position.y -= 0.2;
+                            sel.rotation.x += Math.PI / (8 / 0.2);
+                        } else {
+                            selected.splice(i, 1);
+                        }
+                    } else {
+                        if(sel.position.y < 8) {
+                            sel.position.y += 0.2;
+                            sel.rotation.x -= Math.PI / (8 / 0.2);
+                        }
+                    }
+                }
 
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
+                if (INTERSECTED) {
+                    if(selected.length == 0) {
+                        selected.push(INTERSECTED);
+                        obj = INTERSECTED;
+                    } else {
+                        for(var i = 0; i < selected.length; i++) {
+                            if(selected[i] == INTERSECTED) {
+                                return;
+                            } 
+                        }
+                        selected.push(INTERSECTED);
+                        obj = INTERSECTED;
+                    }
+                }
+            }
 
-    // When the user clicks the button, open the modal 
-    var openModal = function(event) {
-        if (!orbitControls.getMove() && obj != undefined) {
-            modal.style.display = "block";
-            document.getElementsByClassName('modal-content')[0].style.height = window.innerHeight * 0.6 + 'px';
-            document.getElementsByClassName('modal-content')[0].style.width = window.innerHeight * 0.3 + 'px';
-            document.getElementsByClassName('card-name')[0].innerHTML = obj.name;
-            document.getElementsByClassName('modal-content')[0].style.backgroundColor = '#' + obj.currentHexString;
-        }
+            function render() {
+                renderer.render(scene, camera);
 
-        window.removeEventListener('mousemove', onDocumentMouseMove);
+                // step += 0.01;
+                // if (camera instanceof THREE.Camera) {
+                //     var x = 20 * (Math.sin(step));
+                //     var z = 20 * (2 * Math.cos(step) * Math.sin(step));
+                //     camera.lookAt(new THREE.Vector3(x, 15, z));
+                //     lookAt.position.copy(new THREE.Vector3(x, 15, z));
+                // }
+            }
+ 
+            var look;
+            var step = 0;
+            function update() {
 
-    }
-
-    var openModalTouch = function(event) {
-
-        onDocumentMouseMove(event.changedTouches[0]);
-        window.setTimeout(openModal, 500);
-
-    }
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-        window.addEventListener('mousemove', onDocumentMouseMove, false);
+                sphere.position.x = camera.position.x * 0.3;
+                sphere.position.y = camera.position.y * 0.3;
+                sphere.position.z = camera.position.z * 0.3;
 
 
-        orbitControls.setMove(true);
-    }
+                // find intersections
 
-    // When the user clicks anywhere outside of the modal, close it
-    // window.onclick = function(event) {
-    //     if (event.target == modal) {
-    //         modal.style.display = "none";
-    //     }
-    // }
+                // create a Ray with origin at the mouse position
+                // and direction into the scene (camera direction)
 
-    window.addEventListener('mouseup', openModal, true);
-    window.addEventListener('mousemove', onDocumentMouseMove, false);
-    window.addEventListener('touchend', openModalTouch, true);
-    window.scene = scene;
-    window.onload = init;
-    </script>
-</body>
+                var vector = new THREE.Vector3(mouse.x, mouse.y, 1);
+                vector.unproject(camera);
+                var ray = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
 
+                // create an array containing all objects in the scene with which the ray intersects
+                var intersects = ray.intersectObjects(scene.children);
+
+                // INTERSECTED = the object in the scene currently closest to the camera
+                // and intersected by the Ray projected from the mouse position
+
+                // if there is one (or more) intersections
+                if(intersects.length > 0) {
+                    // if the closest object intersected is not the currently stored intersection object
+                    if(intersects[0].object != INTERSECTED) {
+                        // if(INTERSECTED)
+                        //     INTERSECTED.material.color.setHex(INTERSECTED.currentHex);
+                        // store reference to closest object as current intersection object
+                        INTERSECTED = intersects[0].object;
+
+                        // store color of closest object (for later restoration)
+                        // INTERSECTED.currentHexString = INTERSECTED.material.color.getHexString();
+                        // INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
+                        // // set a new color for closest object
+                        // INTERSECTED.material.color.setHex(0xffff00);
+                    }
+                }
+                else { // there are no intersections
+                    // restore previous intersection object (if it exists) to its original color
+                    // if (INTERSECTED)
+                    //     INTERSECTED.material.color.setHex(INTERSECTED.currentHex);
+                    INTERSECTED = null;
+                }
+
+                if(look != undefined) {
+                    var step = 0.5;                    
+                    var vect = ['x', 'y', 'z'];
+                    for(var i = 0; i < vect.length; i++) {
+                        if(Math.floor(orbitControls.target[vect[i]]) != Math.floor(look[vect[i]])) {
+                            if(orbitControls.target[vect[i]] > look[vect[i]]) {
+                                orbitControls.target[vect[i]] -= step;
+                            } else {
+                                orbitControls.target[vect[i]] += step;
+                            }
+                        }
+                    }
+                    if(Math.floor(orbitControls.target['z']) == Math.floor(look['z'])) {
+                        openModal();
+                    }
+                }
+                //orbitControls.target = look;
+
+                orbitControls.update();
+            }
+            
+            // Get the modal
+            var modal = document.getElementById("myModal");
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal 
+            var openModal = function(event) {
+
+                if(!orbitControls.getMove() && obj != undefined) {
+                    modal.style.display = "block";
+                    document.getElementsByClassName('modal-content')[0].style.height = window.innerHeight * 0.6 + 'px';
+                    document.getElementsByClassName('modal-content')[0].style.width = window.innerHeight * 0.3 + 'px';
+                    document.getElementsByClassName('card-name')[0].innerHTML = obj.name;
+                    document.getElementsByClassName('modal-content')[0].style.backgroundColor = '#' + obj.currentHexString;
+                }
+
+            }
+
+            var getCard = function(event) {
+
+                if(1) {
+                if(obj != undefined && obj != null) {
+                    window.removeEventListener('mousemove', onDocumentMouseMove, true);
+                    mouse.x = obj.position.x;
+                    mouse.y = obj.position.z;
+                    camera.fov = 25;
+                    look = new THREE.Vector3(obj.position.x, 0, obj.position.z);
+                }
+                }
+
+
+            }
+
+            var getCard2 = function(event) {
+
+                if(obj != undefined && obj != null) {
+                    card = obj.clone();
+                    card.name = 'picked-card';
+                    card.position.x = camera.position.x * 0.3;
+                    card.position.y = camera.position.y * 0.3;
+                    card.position.z = camera.position.z * 0.3;
+                    card.rotation.x = 0.5 * Math.PI;
+                    card.rotation.y = 0.25 * Math.PI;
+                    card.rotation.z = 0;
+                    card.rotation.x = -0.25*Math.PI;
+                    card.rotation.y = -0.25 * Math.PI;
+                    card.rotation.z = -0.25*Math.PI;
+                    
+                    cardAnimate();
+                    setTimeout(function() {
+                        window.cancelAnimationFrame(cardReq);
+                    }, 1000);
+
+                    scene.add(card);
+                }
+
+            }
+
+            var cardReq;
+            var card;
+            var cardAnimate = function() {
+                cardReq = requestAnimationFrame(cardAnimate);
+
+                if(camera.fov > 25) {
+                    camera.fov *= (0.995);
+                    camera.updateProjectionMatrix();
+                }
+            }
+
+            var openModalTouch = function(event) {
+
+                onDocumentMouseMove(event.changedTouches[0]);
+                window.setTimeout(openModal, 500);
+
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+                window.addEventListener('mousemove', onDocumentMouseMove, true);
+
+                orbitControls.setMove(true);
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            // window.onclick = function(event) {
+            //     if (event.target == modal) {
+            //         modal.style.display = "none";
+            //     }
+            // }
+
+            window.addEventListener('mouseup', getCard, false);
+            window.addEventListener('mousemove', onDocumentMouseMove, true);
+            window.addEventListener('touchend', openModalTouch, true);
+            window.scene = scene;
+            window.onload = init;
+
+        </script>
+    </body>
 </html>

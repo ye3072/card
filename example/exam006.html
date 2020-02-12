@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-
 <html>
-
     <head>
         <meta charset="utf-8">
         <title>Example 005</title>
@@ -10,74 +8,20 @@
         <script type="text/javascript" src="../libs/OrbitControls.js"></script>
         <script type="text/javascript" src="../libs/THREEx.FullScreen.js"></script>
         <script type="text/javascript" src="../libs/THREEx.WindowResize.js"></script>
-        <style>
-            body {
-                /* set margin to 0 and overflow to hidden, to go fullscreen */
-                margin: 0;
-                overflow: hidden;
-            }
-            canvas {
-                width: 100%;
-                height: 100%;
-            }
-            /* The Modal (background) */
-            .modal {
-              display: none; /* Hidden by default */
-              position: fixed; /* Stay in place */
-              z-index: 1; /* Sit on top */
-              padding-top: 10%; /* Location of the box */
-              padding-bottom: 10%;
-              left: 0;
-              top: 0;
-              width: 100%; /* Full width */
-              height: 100%; /* Full height */
-              overflow: auto; /* Enable scroll if needed */
-              background-color: rgb(0,0,0); /* Fallback color */
-              background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            }
-
-            /* Modal Content */
-            .modal-content {
-              background-color: #fefefe;
-              margin: auto;
-              padding: 10px;
-              opacity: 0.85;
-              /*border-radius: 15px;*/
-            }
-
-            /* The Close Button */
-            .close {
-              color: #aaaaaa;
-              float: right;
-              font-size: 28px;
-              font-weight: bold;
-            }
-
-            .close:hover,
-            .close:focus {
-              color: #000;
-              text-decoration: none;
-              cursor: pointer;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="../assets/AgicsCard.css">
     </head>
     <body>
-
         <!-- The Modal -->
         <div id="myModal" class="modal">
-
           <!-- Modal content -->
           <div class="modal-content">
             <span class="close">&times;</span>
             <p>card name</p>
             <strong><p class="card-name"></p></strong>
           </div>
-
         </div>
-
         <!-- Javascript code that runs our Three.js examples -->
         <script type="text/javascript">
-
             var scene;
             var camera;
             var renderer;
@@ -92,7 +36,7 @@
             imageElement.onload = function ( e ) {
                 texture = new THREE.Texture(this);
                 texture.needsUpdate = true;
-            }
+            };
             imageElement.src = '../assets/images/pengsu.jpg';
 
             var texture2;
@@ -100,11 +44,10 @@
             imageElement2.onload = function ( e ) {
                 texture2 = new THREE.Texture(this);
                 texture2.needsUpdate = true;
-            }
+            };
             imageElement2.src = '../assets/images/snoopy01.png';
 
             function init() {
-
                 scene = new THREE.Scene();
 
                 var axes = new THREE.AxesHelper(50);
@@ -128,19 +71,20 @@
 
                 for(var i = 0; i < 10; i++) {
                     for(var j = 0; j < 10; j++) {
-                    var planeGeometry = new THREE.BoxGeometry(20, 10);
-                    var planeMaterial = new THREE.MeshBasicMaterial({opacity: 1, /*color: Math.random() * 0xffffff,*/ transparent: true, side: THREE.BackSide, map: texture});
-                    var planeMaterial2 = new THREE.MeshBasicMaterial({opacity: 1, /*color: Math.random() * 0xffffff,*/ transparent: true, side: THREE.BackSide, map: texture2});
 
-                    var plane = new THREE.Mesh(planeGeometry, [planeMaterial, planeMaterial2]);
+                        var planeGeometry = new THREE.BoxGeometry(20, 10);
+                        var planeMaterial = new THREE.MeshBasicMaterial({opacity: 1, /*color: Math.random() * 0xffffff,*/ transparent: true, side: THREE.BackSide, map: texture});
+                        var planeMaterial2 = new THREE.MeshBasicMaterial({opacity: 1, /*color: Math.random() * 0xffffff,*/ transparent: true, side: THREE.BackSide, map: texture2});
 
-                    var planeNum = i * 10 + j;
-                    plane.name = "plane-" + planeNum;
-                    plane.rotation.x = 0.5 * Math.PI;
-                    plane.translateX(-120 + 30 * i);
-                    plane.translateY(-60 + 15 * j);
+                        var plane = new THREE.Mesh(planeGeometry, [planeMaterial, planeMaterial2]);
 
-                    scene.add(plane);
+                        var planeNum = i * 10 + j;
+                        plane.name = "plane-" + planeNum;
+                        plane.rotation.x = 0.5 * Math.PI;
+                        plane.translateX(-120 + 30 * i);
+                        plane.translateY(-60 + 15 * j);
+
+                        scene.add(plane);
 
                     }
                 }
@@ -254,6 +198,7 @@
 
             // When the user clicks the button, open the modal 
             var openModal = function(event) {
+
                 if(!orbitControls.getMove() && obj != undefined) {
                     modal.style.display = "block";
                     document.getElementsByClassName('modal-content')[0].style.height = window.innerHeight * 0.6 + 'px';
@@ -262,7 +207,9 @@
                     document.getElementsByClassName('modal-content')[0].style.backgroundColor = '#' + obj.currentHexString;
                 }
 
-                window.removeEventListener('mousemove', onDocumentMouseMove, true);
+                if(modal.style.display == 'block') {
+                    window.removeEventListener('mousemove', onDocumentMouseMove, true);
+                }
 
             }
 
@@ -288,7 +235,7 @@
             //     }
             // }
 
-            window.addEventListener('mouseup', openModal, true);
+            window.addEventListener('mouseup', openModal, false);
             window.addEventListener('mousemove', onDocumentMouseMove, true);
             window.addEventListener('touchend', openModalTouch, true);
             window.scene = scene;

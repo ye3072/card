@@ -568,6 +568,12 @@ THREE.OrbitControls = function ( object, domElement ) {
 
     }
 
+    this.handleZoomOut = function( event ) {
+        dollyOut( 2 * getZoomScale() );
+
+        scope.update();
+    }
+
     function handleKeyDown( event ) {
 
         var needsUpdate = false;
@@ -920,14 +926,10 @@ THREE.OrbitControls = function ( object, domElement ) {
 
         handleMouseUp( event );
 
-        // yelee: addEventListener
-        document.addEventListener( 'mousemove', onDocumentMouseMove, true );
         document.removeEventListener( 'mousemove', onMouseMove, false );
         document.removeEventListener( 'mouseup', onMouseUp, false );
 
         scope.dispatchEvent( endEvent );
-
-        
 
         state = STATE.NONE;
 
