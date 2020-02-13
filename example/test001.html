@@ -43,6 +43,7 @@
     var mouse = { x: -1000, y: -1000 };
     var projector;
     var INTERSECTED;
+    var BACKINTERSECTED;
 
     var texture;
     var imageElement = document.createElement('img');
@@ -84,22 +85,22 @@
 
         //백그라운드 PLANE
         var backgroundGeometry = new THREE.PlaneGeometry(245, 145);
-        var backgroundMaterial = new THREE.MeshLambertMaterial({color: 0xA2BC2B, side: THREE.DoubleSide});
+        var backgroundMaterial = new THREE.MeshLambertMaterial({color: 0xCCCCCC, side: THREE.DoubleSide});
         //backgroundPlaneGeometryMaterial.transparent =true;
         
         var backgroundPlane = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
         backgroundPlane.name ='BackGround';
-        backgroundPlane.position.y = -1;
+        backgroundPlane.position.y = -3;
         backgroundPlane.rotation.x = 0.5 * Math.PI;
         backgroundPlane.receiveShadow = true;
         scene.add(backgroundPlane);
 
-        var directionalLight = new THREE.DirectionalLight(0xffffff);
-        directionalLight.position.set(25, 30, 20);
-        directionalLight.castShadow = true;
-        scene.add(directionalLight);
+        var spotLight = new THREE.SpotLight(0xffffff, 2);
+        spotLight.position.set(-20, 90, -20);
+        spotLight.castShadow = true;
+        scene.add(spotLight);
 
-        var cameraHelper = new THREE.CameraHelper( directionalLight.shadow.camera );
+        var cameraHelper = new THREE.CameraHelper( spotLight.shadow.camera );
         scene.add(cameraHelper);
 
         var sphereGeometry = new THREE.SphereGeometry(5);
@@ -115,8 +116,8 @@
             for (var j = 0; j < 10; j++) {
 
                 var planeGeometry = new THREE.BoxGeometry(20, 10);
-                var planeMaterial = new THREE.MeshBasicMaterial({ opacity: 1, /*color: Math.random() * 0xffffff,*/ transparent: true, side: THREE.BackSide, map: texture });
-                var planeMaterial2 = new THREE.MeshBasicMaterial({ opacity: 1, /*color: Math.random() * 0xffffff,*/ transparent: true, side: THREE.BackSide, map: texture2 });
+                var planeMaterial = new THREE.MeshBasicMaterial({ opacity: 1, /*color: Math.random() * 0xffffff,*/ transparent: true, side: THREE.FrontSide, map: texture2 });
+                var planeMaterial2 = new THREE.MeshBasicMaterial({ opacity: 1, /*color: Math.random() * 0xffffff,*/ transparent: true, side: THREE.FrontSide, map: texture });
 
                 var plane = new THREE.Mesh(planeGeometry, [planeMaterial, planeMaterial2]);
 
@@ -159,8 +160,6 @@
         render();
         update();
 
-        console.log('back: ', BACKINTERSECTED);
-
         for (var i = 0; i < selected.length; i++) {
             var sel = selected[i];
             if (sel != obj) {
@@ -193,7 +192,7 @@
             }
         }
 
-        if(BACKINTERSECTED === null){
+        if(BACKINTERSECTED === null && picked){
             obj = null;
         }
     }
@@ -268,26 +267,31 @@
     var picked = true;
     var clicked_obj;
     var moveToCard = function(event) {
+        //debugger;
 
         if(obj != undefined && obj != null) {
             clicked_obj = obj;
-            selected.push(obj);
+            //selected.push(obj);
         }
 
         if (!orbitControls.getMove() && clicked_obj != undefined && clicked_obj != null) {
             mouse.x = clicked_obj.position.x;
             mouse.y = clicked_obj.position.z;
-            look = new THREE.Vector3(obj.position.x, 0, obj.position.z);
+            obj = clicked_obj;
+            selected.push(clicked_obj);
+            look = new THREE.Vector3(clicked_obj.position.x, 0, clicked_obj.position.z);
         }
 
         if(!orbitControls.getMove() || (clicked_obj != null && clicked_obj != undefined)) {
             if (picked) {
+                obj = clicked_obj;
+                //selected.push(clicked_obj);
                 window.removeEventListener('mousemove', onDocumentMouseMove, true);
-                selected.push(clicked_obj);
                 picked = false;
             } else {
                 window.addEventListener('mousemove', onDocumentMouseMove, true);
                 picked = true;
+                selected.push(clicked_obj);
                 obj = clicked_obj;
             }
         }
