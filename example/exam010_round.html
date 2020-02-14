@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Example 005</title>
+    <title>Example rounded</title>
     <script type="text/javascript" src="../libs/three_lye.js"></script>
     <script type="text/javascript" src="../libs/Projector.js"></script>
     <script type="text/javascript" src="../libs/OrbitControls.js"></script>
@@ -31,7 +31,6 @@
         </div>
     </div>
     <div id="content">
-
     </div>
     <!-- Javascript code that runs our Three.js examples -->
     <script type="text/javascript">
@@ -68,7 +67,7 @@
         scene.add(axes);
 
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight);
-        camera.position.set(-90, 50, 50);
+        camera.position.set(-50, 100, 30);
         camera.lookAt(scene.position);
 
         renderer = new THREE.WebGLRenderer();
@@ -85,11 +84,11 @@
 
         //백그라운드 PLANE
         var backgroundGeometry = new THREE.PlaneGeometry(245, 145);
-        var backgroundMaterial = new THREE.MeshLambertMaterial({color: 0xCCCCCC, side: THREE.DoubleSide});
+        var backgroundMaterial = new THREE.MeshLambertMaterial({ color: 0xCCCCCC, side: THREE.DoubleSide });
         //backgroundPlaneGeometryMaterial.transparent =true;
-        
+
         var backgroundPlane = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
-        backgroundPlane.name ='BackGround';
+        backgroundPlane.name = 'BackGround';
         backgroundPlane.position.y = -3;
         backgroundPlane.rotation.x = 0.5 * Math.PI;
         backgroundPlane.receiveShadow = true;
@@ -100,7 +99,7 @@
         spotLight.castShadow = true;
         scene.add(spotLight);
 
-        var cameraHelper = new THREE.CameraHelper( spotLight.shadow.camera );
+        var cameraHelper = new THREE.CameraHelper(spotLight.shadow.camera);
         scene.add(cameraHelper);
 
         var sphereGeometry = new THREE.SphereGeometry(5);
@@ -115,17 +114,36 @@
         for (var i = 0; i < 10; i++) {
             for (var j = 0; j < 10; j++) {
 
-                var planeGeometry = new THREE.BoxGeometry(20, 10);
+                var width = 20;
+                var height = 10;
+                var radius = 2;
+                var planeGeometry = new THREE.BoxGeometry(width, height, 0, 40, 20, 0);
                 var planeMaterial = new THREE.MeshBasicMaterial({ opacity: 1, /*color: Math.random() * 0xffffff,*/ transparent: true, side: THREE.FrontSide, map: texture2 });
                 var planeMaterial2 = new THREE.MeshBasicMaterial({ opacity: 1, /*color: Math.random() * 0xffffff,*/ transparent: true, side: THREE.FrontSide, map: texture });
+
+                var v1 = new THREE.Vector3();
+                var w1 = (width - (radius * 2)) * 0.5,
+                    h1 = (height - (radius * 2)) * 0.5;
+                var vTemp = new THREE.Vector3(),
+                    vSign = new THREE.Vector3(),
+                    vRad = new THREE.Vector3();
+                    planeGeometry.vertices.forEach(v => {
+                    v1.set(w1, h1, v.z);
+                    vTemp.multiplyVectors(v1, vSign.set(Math.sign(v.x), Math.sign(v.y), 1));
+                    vRad.subVectors(v, vTemp);
+                    if (Math.abs(v.x) > v1.x && Math.abs(v.y) > v1.y && vRad.length() > radius) {
+                        vRad.setLength(radius).add(vTemp);
+                        v.copy(vRad);
+                    }
+                });
 
                 var plane = new THREE.Mesh(planeGeometry, [planeMaterial, planeMaterial2]);
 
                 var planeNum = i * 10 + j;
                 plane.name = "plane-" + planeNum;
                 plane.rotation.x = 0.5 * Math.PI;
-                plane.position.x = (-(backgroundGeometry.parameters.width) / 2 + 25 * i  + (planeGeometry.parameters.width / 2));
-                plane.position.z = (-(backgroundGeometry.parameters.height) / 2 + 15 * j  + (planeGeometry.parameters.height / 2));
+                plane.position.x = (-(backgroundGeometry.parameters.width) / 2 + 25 * i + (planeGeometry.parameters.width / 2));
+                plane.position.z = (-(backgroundGeometry.parameters.height) / 2 + 15 * j + (planeGeometry.parameters.height / 2));
                 plane.castShadow = true;
 
                 scene.add(plane);
@@ -192,7 +210,7 @@
             }
         }
 
-        if(BACKINTERSECTED === null && picked){
+        if (BACKINTERSECTED === null && picked) {
             obj = null;
         }
     }
@@ -202,6 +220,7 @@
     }
 
     var look;
+
     function update() {
 
         var vector = new THREE.Vector3(mouse.x, mouse.y, 0);
@@ -209,12 +228,11 @@
         var ray = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
 
         var intersects = ray.intersectObjects(scene.children.slice(2));
-        var backintersects = ray.intersectObjects(scene.children.slice(1,2));
+        var backintersects = ray.intersectObjects(scene.children.slice(1, 2));
 
-        if(backintersects.length > 0) {       
+        if (backintersects.length > 0) {
             BACKINTERSECTED = backintersects[0].object;
-        }
-        else { 
+        } else {
             BACKINTERSECTED = null;
         }
 
@@ -222,7 +240,7 @@
             if (intersects[0].object != INTERSECTED) {
                 INTERSECTED = intersects[0].object;
             }
-        } else { 
+        } else {
             INTERSECTED = null;
         }
 
@@ -244,24 +262,19 @@
             }else if(camera.position.x - look.x > 0) {
                 camera.position.x -= step;
             }
+
             if(camera.position.z < look.z - 30) {
                 camera.position.z += step;   
             }else if(camera.position.z - look.z > 0) {
                 camera.position.z -= step;
             }
         }
-        //orbitControls.target = look;
 
         orbitControls.update();
     }
 
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
     var getCard = function(event) {
-
         openAnimateModal();
-
     }
 
     var picked = true;
@@ -269,15 +282,24 @@
     var moveToCard = function(event) {
         //debugger;
 
-        if(obj != undefined && obj != null) {
+        if (obj != undefined && obj != null) {
             clicked_obj = obj;
             //selected.push(obj);
         }
 
-        if(!orbitControls.getMove() || (clicked_obj != null && clicked_obj != undefined)) {
+        if (!orbitControls.getMove() || clicked_obj != undefined && clicked_obj != null) {
+            mouse.x = clicked_obj.position.x;
+            mouse.y = clicked_obj.position.z;
+            obj = clicked_obj;
+            selected.push(clicked_obj);
+            look = new THREE.Vector3(clicked_obj.position.x, 0, clicked_obj.position.z);
+            window.removeEventListener('mousemove', onDocumentMouseMove, true);
+        }
+
+        if (!orbitControls.getMove() || (clicked_obj != null && clicked_obj != undefined)) {
             if (picked) {
                 obj = clicked_obj;
-                //selected.push(clicked_obj);
+                selected.push(clicked_obj);
                 window.removeEventListener('mousemove', onDocumentMouseMove, true);
                 picked = false;
             } else {
@@ -288,17 +310,9 @@
             }
         }
 
-        if (!orbitControls.getMove() && clicked_obj != undefined && clicked_obj != null) {
-            mouse.x = clicked_obj.position.x;
-            mouse.y = clicked_obj.position.z;
-            look = new THREE.Vector3(clicked_obj.position.x, 0, clicked_obj.position.z);
-            obj = clicked_obj;
-            selected.push(clicked_obj);
-        }
-
-        if(orbitControls.getMove()) {
+        if (orbitControls.getMove()) {
             //window.addEventListener('mousemove', onDocumentMouseMove, true);
-            picked = false;
+            //picked = false;
         }
 
     }
@@ -313,17 +327,17 @@
     var $modalContainer = $('#modal-container'),
         $body = $('body'),
         $content = $('#content');
-        $background = $('.modal-background');
+    $background = $('.modal-background');
 
     var openAnimateModal = function() {
 
-            $modalContainer.removeAttr('class').addClass('four');
-            $content.removeAttr('class').addClass('content');
+        $modalContainer.removeAttr('class').addClass('four');
+        $content.removeAttr('class').addClass('content');
 
-            $body.addClass('modal-active');
-            document.getElementsByClassName('card-name')[0].innerHTML = clicked_obj.name;
+        $body.addClass('modal-active');
+        document.getElementsByClassName('card-name')[0].innerHTML = clicked_obj.name;
 
-            $content.addClass('four');
+        $content.addClass('four');
     }
 
     $modalContainer.on('mouseup', function() {
@@ -334,14 +348,13 @@
         }
 
         obj = clicked_obj;
-        //moveToCard();
         picked = true;
         //orbitControls.setMove(true);
 
     });
 
     window.onkeydown = function(event) {
-        if(event.key == 'z') {
+        if (event.key == 'z') {
             obj = undefined;
             addEventListener('mousemove', onDocumentMouseMove, true);
         }
