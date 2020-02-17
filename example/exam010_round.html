@@ -105,7 +105,7 @@
         var sphereGeometry = new THREE.SphereGeometry(5);
         var sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x5CD1E5 });
         sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-        
+
         for (var i = 0; i < 10; i++) {
             for (var j = 0; j < 10; j++) {
 
@@ -122,7 +122,7 @@
                 var vTemp = new THREE.Vector3(),
                     vSign = new THREE.Vector3(),
                     vRad = new THREE.Vector3();
-                    planeGeometry.vertices.forEach(v => {
+                planeGeometry.vertices.forEach(v => {
                     v1.set(w1, h1, v.z);
                     vTemp.multiplyVectors(v1, vSign.set(Math.sign(v.x), Math.sign(v.y), 1));
                     vRad.subVectors(v, vTemp);
@@ -163,6 +163,7 @@
     var obj;
     var clicked_obj;
     var selected = [];
+
     function animate() {
         requestAnimationFrame(animate);
         render();
@@ -254,15 +255,15 @@
                 }
             }
 
-            if(Math.floor(camera.position.x) < Math.floor(look.x) - 30) {
+            if (Math.floor(camera.position.x) < Math.floor(look.x) - 30) {
                 camera.position.x += step;
-            }else if(camera.position.x - look.x > 0) {
+            } else if (camera.position.x - look.x > 0) {
                 camera.position.x -= step;
             }
 
-            if(camera.position.z < look.z - 30) {
-                camera.position.z += step;   
-            }else if(camera.position.z - look.z > 0) {
+            if (camera.position.z < look.z - 30) {
+                camera.position.z += step;
+            } else if (camera.position.z - look.z > 0) {
                 camera.position.z -= step;
             }
         }
@@ -348,31 +349,23 @@
         // 화면 앞으로 오는지 테스트하기 위해 복제함
         var card = clicked_obj.clone();
 
-        var vect = ['x', 'y', 'z'];
         var ratio = 0.3;
+        var vect = ['x', 'y', 'z'];
         for (var i = 0; i < vect.length; i++) {
             var dist = 0;
-
             if (camera.position[vect[i]] * card.position[vect[i]] < 0) {
                 dist = Math.abs(camera.position[vect[i]]) + Math.abs(card.position[vect[i]]);
-
-                if(camera.position[vect[i] > card.position[vect[i]]]) {
-                    vect[i] = card.position[vect[i]] + (dist * ratio);
-                } else {
-                    vect[i] = camera.position[vect[i]] + (dist * ratio);
-                }
-
+            } else if (camera.position[vect[i] > card.position[vect[i]]]) {
+                dist = camera.position[vect[i]] - card.position[vect[i]];
             } else {
-                if(camera.position[vect[i] > card.position[vect[i]]]) {
-                    dist = camera.position[vect[i]] - card.position[vect[i]];
-                    vect[i] = card.position[vect[i]] + (dist * ratio);
-
-                } else {
-                    dist = card.position[vect[i]] - camera.position[vect[i]];
-                    vect[i] = camera.position[vect[i]] + (dist * ratio);
-                }
+                dist = card.position[vect[i]] - camera.position[vect[i]];
             }
 
+            if (camera.position[vect[i] > card.position[vect[i]]]) {
+                vect[i] = card.position[vect[i]] + (dist * ratio);
+            } else {
+                vect[i] = camera.position[vect[i]] + (dist * ratio);
+            }
         }
 
         card.position.set(vect[0], vect[1], vect[2]);
@@ -381,7 +374,7 @@
 
     }
 
-    window.addEventListener('mouseup', moveToCard, false);\
+    window.addEventListener('mouseup', moveToCard, false);
     // modal
     //window.addEventListener('dblclick', getCard, false);
 
