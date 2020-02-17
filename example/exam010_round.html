@@ -105,18 +105,14 @@
         var sphereGeometry = new THREE.SphereGeometry(5);
         var sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x5CD1E5 });
         sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-        sphere.position.x = camera.position.x * 0.3;
-        sphere.position.y = camera.position.y * 0.3;
-        sphere.position.z = camera.position.z * 0.3;
-        //scene.add(sphere);
-
+        
         for (var i = 0; i < 10; i++) {
             for (var j = 0; j < 10; j++) {
 
                 var width = 20;
                 var height = 10;
                 var radius = 2;
-                var planeGeometry = new THREE.BoxGeometry(width, height, 0, 40, 20, 0);
+                var planeGeometry = new THREE.BoxGeometry(width, height, 0, 40, 30, 0);
                 var planeMaterial = new THREE.MeshBasicMaterial({ side: THREE.FrontSide, map: frontText });
                 var planeMaterial2 = new THREE.MeshBasicMaterial({ side: THREE.FrontSide, map: backText });
 
@@ -171,6 +167,13 @@
         requestAnimationFrame(animate);
         render();
         update();
+
+        /*
+        sphere.position.x = camera.position.x * 0.6;
+        sphere.position.y = camera.position.y * 0.8;
+        sphere.position.z = camera.position.z * 0.6;
+        scene.add(sphere);
+        */
 
         for (var i = 0; i < selected.length; i++) {
             var sel = selected[i];
@@ -274,11 +277,9 @@
     var picked = true;
     var clicked_obj;
     var moveToCard = function(event) {
-        //debugger;
 
         if (obj != undefined && obj != null) {
             clicked_obj = obj;
-            //selected.push(obj);
         }
 
         if (!orbitControls.getMove() || clicked_obj != undefined && clicked_obj != null) {
@@ -287,26 +288,15 @@
             obj = clicked_obj;
             selected.push(clicked_obj);
             look = new THREE.Vector3(clicked_obj.position.x, 0, clicked_obj.position.z);
-            window.removeEventListener('mousemove', onDocumentMouseMove, true);
-        }
 
-        if (!orbitControls.getMove() || (clicked_obj != null && clicked_obj != undefined)) {
             if (picked) {
-                obj = clicked_obj;
-                selected.push(clicked_obj);
                 window.removeEventListener('mousemove', onDocumentMouseMove, true);
                 picked = false;
             } else {
                 window.addEventListener('mousemove', onDocumentMouseMove, true);
                 picked = true;
-                selected.push(clicked_obj);
-                obj = clicked_obj;
             }
-        }
 
-        if (orbitControls.getMove()) {
-            //window.addEventListener('mousemove', onDocumentMouseMove, true);
-            //picked = false;
         }
 
     }
@@ -320,8 +310,8 @@
 
     var $modalContainer = $('#modal-container'),
         $body = $('body'),
-        $content = $('#content');
-    $background = $('.modal-background');
+        $content = $('#content'),
+        $background = $('.modal-background');
 
     var openAnimateModal = function() {
 
@@ -343,7 +333,6 @@
 
         obj = clicked_obj;
         picked = true;
-        //orbitControls.setMove(true);
 
     });
 
@@ -354,8 +343,50 @@
         }
     }
 
-    window.addEventListener('mouseup', moveToCard, false);
-    window.addEventListener('dblclick', getCard, false);
+    var getCardFront = function() {
+
+        // 화면 앞으로 오는지 테스트하기 위해 복제함
+        var card = clicked_obj.clone();
+
+        var vect = ['x', 'y', 'z'];
+        var ratio = 0.3;
+        for (var i = 0; i < vect.length; i++) {
+            var dist = 0;
+
+            if (camera.position[vect[i]] * card.position[vect[i]] < 0) {
+                dist = Math.abs(camera.position[vect[i]]) + Math.abs(card.position[vect[i]]);
+
+                if(camera.position[vect[i] > card.position[vect[i]]]) {
+                    vect[i] = card.position[vect[i]] + (dist * ratio);
+                } else {
+                    vect[i] = camera.position[vect[i]] + (dist * ratio);
+                }
+
+            } else {
+                if(camera.position[vect[i] > card.position[vect[i]]]) {
+                    dist = camera.position[vect[i]] - card.position[vect[i]];
+                    vect[i] = card.position[vect[i]] + (dist * ratio);
+
+                } else {
+                    dist = card.position[vect[i]] - camera.position[vect[i]];
+                    vect[i] = camera.position[vect[i]] + (dist * ratio);
+                }
+            }
+
+        }
+
+        card.position.set(vect[0], vect[1], vect[2]);
+
+        scene.add(card);
+
+    }
+
+    window.addEventListener('mouseup', moveToCard, false);\
+    // modal
+    //window.addEventListener('dblclick', getCard, false);
+
+    // in front of camera
+    window.addEventListener('dblclick', getCardFront, false);
     window.addEventListener('mousemove', onDocumentMouseMove, true);
     window.addEventListener('touchend', openModalTouch, true);
     window.scene = scene;

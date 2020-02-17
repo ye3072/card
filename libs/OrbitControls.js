@@ -103,12 +103,16 @@ THREE.OrbitControls = function ( object, domElement ) {
 
     // yelee
     this.getMove = function ( ) {
+
         return move;
+
     };
 
     // yelee
     this.setMove = function ( b ) {
+
         move = b;
+        
     };
 
     this.getAzimuthalAngle = function () {
