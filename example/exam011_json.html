@@ -1,38 +1,59 @@
 <!DOCTYPE html>
-
 <html>
+<!--
 
-    <head>
-        <meta charset="utf-8">
-        <title>Example 001</title>
-        <script type="text/javascript" src="../libs/three.js"></script>
-        <script type="text/javascript" src="../libs/OrbitControls.js"></script>
-        <script type="text/javascript" src="../libs/THREEx.WindowResize.js"></script>
-        <link rel="stylesheet" type="text/css" href="../assets/animate_modal.css">
-        <style>
-            body {
+    json parsing
+
+-->
+<head>
+    <meta charset="utf-8">
+    <title>Example 001</title>
+    <script type="text/javascript" src="../libs/three.js"></script>
+    <script type="text/javascript" src="../libs/OrbitControls.js"></script>
+    <script type="text/javascript" src="../libs/THREEx.WindowResize.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <style>
+        body {
                 /* set margin to 0 and overflow to hidden, to go fullscreen */
                 margin: 0;
-                overflow: hidden;
             }
             canvas {
                 width: 100%;
                 height: 100%;
             }
         </style>
-    </head>
-    <body>
+</head>
 
-        <!-- Javascript code that runs our Three.js examples -->
-        <script type="text/javascript">
+<body>
+    <div id="json">
+    </div>
+    <script type="text/javascript">
+    function init() {
 
-            // once everything is loaded, we run our Three.js stuff.
-            function init() {
+        var xhr = new XMLHttpRequest();
+        var target = "./test.json";
+        xhr.open("GET", target);
+        xhr.send();
 
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status == 200) {
+                    let loadedJSON = JSON.parse(xhr.responseText);
+                    var html = '';
+                    for(var i = 0; i < loadedJSON.length; i++) {
+                        html += 'x: ' + loadedJSON[i].x;
+                        html += ', y: ' + loadedJSON[i].y + '<br>';
+                    }
+                    $("#json").html(html);
+                } else {
+                    alert("fail to load");
+                }
             }
-            
-            window.onload = init;
+        }
+    }
 
-        </script>
-    </body>
+    window.onload = init;
+    </script>
+</body>
+
 </html>
