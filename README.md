@@ -1,2 +1,2 @@
-# agics_card
+# card
 card
